@@ -7,6 +7,7 @@ import {
 } from "@/services/pokemon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface Pokemon {
   id: number;
@@ -15,17 +16,23 @@ interface Pokemon {
 }
 
 export default function PokemonPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [pokemonsType, setPokemonsType] = useState<Pokemon[]>([]);
   const [types, setTypes] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const offset = (page - 1) * limit;
     const fetchData = async () => {
       try {
-        const pokemonData = await getData();
+        const pokemonData = await getData(limit, offset);
         const pokemonTypes = await getAllPokemonType();
         setPokemons(pokemonData);
         setTypes(pokemonTypes);
@@ -37,7 +44,17 @@ export default function PokemonPage() {
     };
 
     fetchData();
-  }, []);
+  }, [page, limit]);
+
+  useEffect(() => {
+    const urlLimit = searchParams.get("limit");
+    const urlPage = searchParams.get("page");
+
+    if (urlLimit && urlPage) {
+      setLimit(Number(urlLimit));
+      setPage(Number(urlPage));
+    }
+  }, [searchParams]);
 
   const handleSelectedTypes = async (e: any) => {
     const selectedType = e.target.value;
@@ -50,6 +67,22 @@ export default function PokemonPage() {
       console.error(`Error fetching Pokémon of type ${selectedType}:`, error);
       setPokemonsType([]);
     }
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+    updateUrlParams(limit, page + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+      updateUrlParams(limit, page - 1);
+    }
+  };
+
+  const updateUrlParams = (limit: number, page: number) => {
+    router.push(`/pokemon?page=${page}`);
   };
 
   const pokemonList = selectedTypes === "" ? pokemons : pokemonsType;
@@ -137,6 +170,21 @@ export default function PokemonPage() {
         ) : (
           <h1 className="text-lg place-items-center">Tidak ada pokemon.</h1>
         )}
+      </div>
+
+      <div className="flex justify-center">
+        <button
+          onClick={handlePreviousPage}
+          className="flex items-center justify-center px-4 h-10 me-3 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNextPage}
+          className="flex items-center justify-center px-4 h-10 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

@@ -90,3 +90,27 @@ export async function addPokemon(data: {
     return { status: true, statusCode: 400, message: "Add Pokemon failed." };
   }
 }
+
+// ADD POKEMON
+export async function deletePokemon(data: { userId: string; id: number }) {
+  const client = await clientPromise;
+  const user = client.db(database).collection("users");
+  const existPokemon = await user.findOne({
+    _id: new ObjectId(data.userId),
+    "pokemons.id": data.id,
+  });
+
+  try {
+    if (existPokemon) {
+      await user.updateOne(
+        { _id: new ObjectId(data.userId) },
+        { $pull: { pokemons: { id: data.id } } }
+      );
+      console.log(data.userId, data.id);
+    }
+
+    return { status: true, statusCode: 200, message: "Add Pokemon success." };
+  } catch (error) {
+    return { status: true, statusCode: 400, message: "Add Pokemon failed." };
+  }
+}

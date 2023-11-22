@@ -26,7 +26,7 @@ interface PokemonDetail {
 export default function PokemonDetailPage(props: any) {
   const { data: session }: { data: any } = useSession();
   const { params } = props;
-  const { push } = useRouter();
+  const router = useRouter();
 
   const [error, setError] = useState("");
   const [pokemon, setPokemon] = useState<Partial<PokemonDetail>>({});
@@ -58,7 +58,7 @@ export default function PokemonDetailPage(props: any) {
         ...pokemonData,
       });
       if (res.status === 200) {
-        push("/pokemon");
+        router.push("/pokemon");
       }
     } catch (error) {
       console.log("get pokemon error : ", error);
@@ -107,6 +107,12 @@ export default function PokemonDetailPage(props: any) {
           </button>
         </div>
       </div>
+      <button
+        onClick={() => router.back()}
+        className="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-600"
+      >
+        Back
+      </button>
     </>
   );
 }

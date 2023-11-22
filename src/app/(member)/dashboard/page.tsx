@@ -25,6 +25,27 @@ export default function Dashboard() {
     }
   }, []);
 
+  const handleDeletePokemon = async (id: number) => {
+    const userId = session.user._id;
+    const pokemonData = {
+      id,
+    };
+
+    try {
+      await axios.post("/api/pokemon/deletePokemon", {
+        userId,
+        ...pokemonData,
+      });
+
+      setTimeout(async () => {
+        const response = await axios.get(`/api/user?id=${userId}`);
+        setUser(response.data.data);
+      }, 200);
+    } catch (error) {
+      console.log("get pokemon error : ", error);
+    }
+  };
+
   return (
     <>
       <div>
@@ -72,17 +93,25 @@ export default function Dashboard() {
                   key={pokemon.id}
                   className="border border-gray-200 rounded-md p-2 hover:shadow"
                 >
-                  <div className="flex items-center gap-x-3">
-                    <img
-                      className="w-20"
-                      src={pokemon.image}
-                      alt={pokemon.name}
-                    />
-                    <div>
-                      <h3 className="text-xl font-semibold leading-7 tracking-tight text-gray-900">
-                        {pokemon.name.toUpperCase()}
-                      </h3>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-x-3">
+                      <img
+                        className="w-20"
+                        src={pokemon.image}
+                        alt={pokemon.name}
+                      />
+                      <div>
+                        <h3 className="text-xl font-semibold leading-7 tracking-tight text-gray-900">
+                          {pokemon.name.toUpperCase()}
+                        </h3>
+                      </div>
                     </div>
+                    <button
+                      onClick={() => handleDeletePokemon(pokemon.id)}
+                      className="bg-red-500 hover:bg-red-600 p-2 rounded-md text-xs text-white"
+                    >
+                      Release
+                    </button>
                   </div>
                 </li>
               ))

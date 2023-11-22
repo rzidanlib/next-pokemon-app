@@ -25,9 +25,14 @@ interface PokemonDetail {
   }[];
 }
 
-export const getData = async (): Promise<Pokemon[]> => {
+export const getData = async (
+  limit: number,
+  offset: number
+): Promise<Pokemon[]> => {
   try {
-    const response = await axios.get(`${pokeApi}/pokemon`);
+    const response = await axios.get(
+      `${pokeApi}/pokemon?limit=${limit}&offset=${offset}`
+    );
     const pokemonData = await Promise.all(
       response.data.results.map(async (result: any) => {
         const detailsResponse = await axios.get(result.url);
