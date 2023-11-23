@@ -2,8 +2,8 @@
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 
-import Navbar from "./navbar";
-import Sidebar from "./sidebar";
+import Navbar from "./dashboard/navbar";
+import Sidebar from "./dashboard/sidebar";
 import { useEffect } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -48,13 +48,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     redirect("/login");
   }
 
-  return (
-    <>
-      <Navbar />
-      <Sidebar />
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 mt-14">{children}</div>
-      </div>
-    </>
-  );
+  return <>{children}</>;
 }

@@ -25,6 +25,8 @@ export default function PokemonPage() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
 
+  console.log("page=======", page);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -22,6 +22,7 @@ export async function register(data: {
   fullname: string;
   email: string;
   password: string;
+  gender: string;
   role?: string;
 }) {
   const client = await clientPromise;
@@ -31,7 +32,7 @@ export async function register(data: {
   if (existUser) {
     return { status: false, statusCode: 400, message: "Email sudah ada." };
   } else {
-    data.role = "admin";
+    data.role = "member";
     data.password = await bcrypt.hash(data.password, 10);
 
     try {

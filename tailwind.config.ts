@@ -13,6 +13,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "hero-img": "url(/img/hero.png)",
+        "img-register": "url(/img/poster.jpg)",
         "hero-pattern":
           "linear-gradient(to right bottom, rgba('#7ed56f',0.8), rgba('#28b485',0.8)), url(/img/hero.png)",
       },

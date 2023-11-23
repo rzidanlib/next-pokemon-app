@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import GenderPicture from "@/components/component/GenderPicture";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -48,38 +49,50 @@ export default function Dashboard() {
 
   return (
     <>
-      <div>
-        <div className="px-4 sm:px-0">
-          <h3 className="text-base font-semibold leading-7 text-gray-900">
-            User Information
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-            Role : {user?.role}
-          </p>
-        </div>
-        <div className="mt-6 border-t border-gray-100">
-          <dl className="divide-y divide-gray-100">
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-gray-900">
-                Full name
-              </dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {user?.fullname}
-              </dd>
-            </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-gray-900">
-                Email
-              </dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {user?.email}
-              </dd>
-            </div>
-          </dl>
+      <div className="flex flex-row">
+        <GenderPicture gender={user?.gender?.toLowerCase()} />
+
+        <div className="w-full">
+          <div>
+            <p className="text-lg font-semibold leading-7 text-gray-900">
+              Member Information
+            </p>
+            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+              Role : {user?.role?.toUpperCase()}
+            </p>
+          </div>
+          <div className="mt-6 border-t border-gray-100">
+            <dl className="divide-y divide-gray-100">
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium leading-6 text-gray-900">
+                  Full name
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {user?.fullname?.toUpperCase()}
+                </dd>
+              </div>
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium leading-6 text-gray-900">
+                  Email
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {user?.email}
+                </dd>
+              </div>
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium leading-6 text-gray-900">
+                  Gender
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {user?.gender?.toUpperCase()}
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
       </div>
 
-      <div className="bg-white py-10">
+      {/* <div className="bg-white py-10">
         <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 xl:grid-cols-3">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -87,8 +100,8 @@ export default function Dashboard() {
             </h2>
           </div>
           <ul role="list" className="grid gap-4 sm:grid-cols-2 xl:col-span-2">
-            {user?.pokemons.length > 0 ? (
-              user?.pokemons.map((pokemon: any) => (
+            {user?.pokemons?.length > 0 ? (
+              user?.pokemons?.map((pokemon: any) => (
                 <li
                   key={pokemon.id}
                   className="border border-gray-200 rounded-md p-2 hover:shadow"
@@ -120,7 +133,7 @@ export default function Dashboard() {
             )}
           </ul>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
